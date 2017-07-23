@@ -1,16 +1,19 @@
 package com.example.leoberteck.cardcrud.activity;
 
+import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
+import com.example.leoberteck.cardcrud.BR;
 import com.example.leoberteck.cardcrud.R;
+import com.example.leoberteck.cardcrud.databinding.ActivityModelFormBinding;
+import com.example.leoberteck.cardcrud.dialogs.CreateNewDialog;
 import com.example.leoberteck.cardcrud.utils.DependencyCacheHelper;
 
-import static com.example.leoberteck.cardcrud.mvp.ModelFromMvp.*;
+import static com.example.leoberteck.cardcrud.mvp.ModelFromMvp.IModelFormActivity;
+import static com.example.leoberteck.cardcrud.mvp.ModelFromMvp.IModelFormPresenter;
 
 public class ModelFormActivity extends AppCompatActivity implements IModelFormActivity {
 
@@ -19,18 +22,17 @@ public class ModelFormActivity extends AppCompatActivity implements IModelFormAc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_model_form);
+        presenter.setModelFromActivity(this);
+        ActivityModelFormBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_model_form);
+        binding.setVariable(BR.viewModel, presenter.getBindingBean());
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        Intent intent = getIntent();
+        if(intent != null && intent.getExtras() != null && intent.getExtras().containsKey("modelId")){
+            presenter.setModel(intent.getExtras().getInt("modelId"));
+        }
     }
 
     @Override
@@ -44,5 +46,29 @@ public class ModelFormActivity extends AppCompatActivity implements IModelFormAc
         if(isFinishing()){
             DependencyCacheHelper.disposeInstance(IModelFormPresenter.class);
         }
+    }
+
+    @Override
+    public void requestNewBrand() {
+        CreateNewDialog newBrandDialog = new CreateNewDialog();
+        newBrandDialog.setListener(new CreateNewDialog.OnCreateDialogConfirmListener() {
+            @Override
+            public void onCreateDialogConfirm(String newName) {
+                presenter.saveNewBrand(newName);
+            }
+        });
+        newBrandDialog.show(getSupportFragmentManager(), null);
+    }
+
+    @Override
+    public void requestNewType() {
+        CreateNewDialog newTypeDialog = new CreateNewDialog();
+        newTypeDialog.setListener(new CreateNewDialog.OnCreateDialogConfirmListener() {
+            @Override
+            public void onCreateDialogConfirm(String newName) {
+                presenter.saveNewType(newName);
+            }
+        });
+        newTypeDialog.show(getSupportFragmentManager(), null);
     }
 }

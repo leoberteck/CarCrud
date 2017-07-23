@@ -7,12 +7,16 @@ package com.example.leoberteck.cardcrud.mvp;
 public interface ModelFromMvp {
 
     interface IModelFormActivity {
-
+        void requestNewBrand();
+        void requestNewType();
     }
 
     interface IModelFormPresenter {
         void setModelFromActivity(IModelFormActivity modelFromActivity);
         void setModel(Integer idModel);
         Object getBindingBean();
+
+        void saveNewBrand(String name);
+        void saveNewType(String name);
     }
 }

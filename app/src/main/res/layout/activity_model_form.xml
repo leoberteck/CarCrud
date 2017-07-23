@@ -4,6 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable name="viewModel" type="com.example.leoberteck.cardcrud.mvp.impl.ModelFormPresenter"/>
+    </data>
+
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,7 +46,8 @@
                     android:id="@+id/activity_model_form_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/form_component_spacing"/>
+                    android:layout_marginBottom="@dimen/form_component_spacing"
+                    android:text="@={viewModel.name}"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -58,14 +63,17 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:entries="@{viewModel.brandList}"
+                        android:selectedItemPosition="@={viewModel.selectedBrandPosition}"/>
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/activity_model_form_brand_add"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_add_white_24dp"
                         app:fabSize="mini"
-                        app:elevation="0dp"/>
+                        app:elevation="0dp"
+                        android:onClick="@{() -> viewModel.requestNewBrand()}"/>
                 </LinearLayout>
 
                 <TextView
@@ -83,14 +91,17 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:entries="@{viewModel.typeList}"
+                        android:selectedItemPosition="@={viewModel.selectedTypePosition}"/>
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/activity_model_form_type_add"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_add_white_24dp"
                         app:fabSize="mini"
-                        app:elevation="0dp"/>
+                        app:elevation="0dp"
+                        android:onClick="@{() -> viewModel.requestNewType()}"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -108,11 +119,12 @@
                             android:layout_height="wrap_content"
                             android:text="@string/activity_model_form_weight"
                             style="@style/Base.TextAppearance.AppCompat.Medium"/>
-                        <EditText
+                        <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/activity_model_form_weight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"/>
+                            android:inputType="numberDecimal"
+                            android:textDouble="@={viewModel.weight}"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -125,22 +137,26 @@
                             android:layout_height="wrap_content"
                             android:text="@string/activity_model_form_price"
                             style="@style/Base.TextAppearance.AppCompat.Medium"/>
-                        <EditText
+                        <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/activity_model_form_price"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"/>
+                            android:inputType="numberDecimal"
+                            android:textDouble="@={viewModel.price}"/>
+                        <!--
+                        -->
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
+                android:id="@+id/activity_model_form_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:layout_margin="@dimen/fab_margin"
                 android:src="@drawable/ic_check_white_60dp"
-                app:fabSize="normal" />
+                app:fabSize="normal"
+                android:onClick="@{() -> viewModel.saveNewModel()}"/>
         </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

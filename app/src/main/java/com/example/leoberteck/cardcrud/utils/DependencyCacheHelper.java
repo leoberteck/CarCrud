@@ -3,6 +3,8 @@ package com.example.leoberteck.cardcrud.utils;
 import android.util.Log;
 
 import com.example.leoberteck.cardcrud.annotations.Profile;
+import com.example.leoberteck.cardcrud.mvp.ModelFromMvp;
+import com.example.leoberteck.cardcrud.mvp.impl.ModelFormPresenter;
 import com.example.leoberteck.cardcrud.repository.impl.BrandRepository;
 import com.example.leoberteck.cardcrud.repository.impl.ModelRepository;
 import com.example.leoberteck.cardcrud.repository.impl.TypeRepository;
@@ -25,14 +27,10 @@ public final class DependencyCacheHelper {
     private static Map<Class, Set<Class>> dependencyLinks = new HashMap<>();
 
     static {
-        dependencyLinks.put(IModelRepository.class, new HashSet<Class>());
-        dependencyLinks.get(IModelRepository.class).add(ModelRepository.class);
-
-        dependencyLinks.put(IBrandRepository.class, new HashSet<Class>());
-        dependencyLinks.get(IBrandRepository.class).add(BrandRepository.class);
-
-        dependencyLinks.put(ITypeRepository.class, new HashSet<Class>());
-        dependencyLinks.get(ITypeRepository.class).add(TypeRepository.class);
+        link(IModelRepository.class, ModelRepository.class);
+        link(IBrandRepository.class, BrandRepository.class);
+        link(ITypeRepository.class, TypeRepository.class);
+        link(ModelFromMvp.IModelFormPresenter.class, ModelFormPresenter.class);
     }
 
     public static <T> void disposeInstance(Class<T> tClass){
@@ -124,5 +122,12 @@ public final class DependencyCacheHelper {
             valueClass = classSet.iterator().next();
         }
         return valueClass;
+    }
+
+    public static void link(Class _interface, Class _implementation){
+        if(!dependencyLinks.containsKey(_interface)){
+            dependencyLinks.put(_interface, new HashSet<Class>());
+        }
+        dependencyLinks.get(_interface).add(_implementation);
     }
 }

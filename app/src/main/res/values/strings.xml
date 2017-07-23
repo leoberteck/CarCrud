@@ -97,4 +97,7 @@
     <string name="activity_model_form_type">Type</string>
     <string name="activity_model_form_weight">Weight</string>
     <string name="activity_model_form_price">Price</string>
+    <string name="dialog_create_new_title">Create new</string>
+    <string name="dialog_create_new_hint">name</string>
+    <string name="dialog_create_confirm">save</string>
 </resources>

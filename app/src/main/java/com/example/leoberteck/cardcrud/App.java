@@ -19,9 +19,7 @@ public final class App extends Application {
         return instace;
     }
 
-    public static DaoSession getDaoSession() {
-        return daoSession;
-    }
+    public static DaoSession getDaoSession() { return daoSession; }
 
     @Override
     public void onCreate() {
