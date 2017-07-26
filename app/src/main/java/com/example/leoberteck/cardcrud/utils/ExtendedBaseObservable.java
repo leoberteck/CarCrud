@@ -13,6 +13,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 
+import org.w3c.dom.Text;
+
 import java.text.DecimalFormat;
 
 /**
@@ -47,41 +49,5 @@ public abstract class ExtendedBaseObservable extends BaseObservable {
     @InverseBindingAdapter(attribute = "selectedItemPosition")
     public Integer getSelectedItemPosition(AppCompatSpinner spinner) {
         return spinner.getSelectedItemPosition();
-    }
-
-
-    final DecimalFormat twoPlaceDecimalFormat = new DecimalFormat("#.00");
-    @BindingAdapter(value = { "android:textDouble", "android:textDoubleAttrChanged" }, requireAll = false)
-    public static void setTextDouble(AppCompatEditText AppCompatEditText, double newValue, final InverseBindingListener inverseBindingListener){
-        AppCompatEditText.setText(String.valueOf(newValue));
-        AppCompatEditText.setSelection(AppCompatEditText.getText().length());
-
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                inverseBindingListener.onChange();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        };
-
-        AppCompatEditText.addTextChangedListener(textWatcher);
-    }
-
-    @InverseBindingAdapter(attribute = "android:textDouble", event = "android:textDoubleAttrChanged")
-    public static double getTextDouble(AppCompatEditText AppCompatEditText){
-        Double value = 0D;
-        try {
-            value = Double.parseDouble(AppCompatEditText.getText().toString());
-        } catch (Exception ex){}
-        return value;
     }
 }

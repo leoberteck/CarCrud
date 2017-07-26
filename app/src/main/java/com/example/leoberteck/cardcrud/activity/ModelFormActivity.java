@@ -12,8 +12,8 @@ import com.example.leoberteck.cardcrud.databinding.ActivityModelFormBinding;
 import com.example.leoberteck.cardcrud.dialogs.CreateNewDialog;
 import com.example.leoberteck.cardcrud.utils.DependencyCacheHelper;
 
-import static com.example.leoberteck.cardcrud.mvp.ModelFromMvp.IModelFormActivity;
-import static com.example.leoberteck.cardcrud.mvp.ModelFromMvp.IModelFormPresenter;
+import static com.example.leoberteck.cardcrud.mvp.ModelFormMvp.IModelFormActivity;
+import static com.example.leoberteck.cardcrud.mvp.ModelFormMvp.IModelFormPresenter;
 
 public class ModelFormActivity extends AppCompatActivity implements IModelFormActivity {
 
@@ -29,10 +29,12 @@ public class ModelFormActivity extends AppCompatActivity implements IModelFormAc
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Integer modelId = null;
         Intent intent = getIntent();
         if(intent != null && intent.getExtras() != null && intent.getExtras().containsKey("modelId")){
-            presenter.setModel(intent.getExtras().getInt("modelId"));
+            modelId = intent.getExtras().getInt("modelId");
         }
+        presenter.setModel(modelId);
     }
 
     @Override
@@ -70,5 +72,10 @@ public class ModelFormActivity extends AppCompatActivity implements IModelFormAc
             }
         });
         newTypeDialog.show(getSupportFragmentManager(), null);
+    }
+
+    @Override
+    public void goBack() {
+        finish();
     }
 }

@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="viewModel" type="com.example.leoberteck.cardcrud.mvp.impl.ModelFormPresenter"/>
+        <import type="com.example.leoberteck.cardcrud.converter.Converters"/>
+        <variable  name="viewModel" type="com.example.leoberteck.cardcrud.mvp.impl.ModelFormPresenter" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -124,7 +125,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="numberDecimal"
-                            android:textDouble="@={viewModel.weight}"/>
+                            android:text="@={`` + viewModel.weight}"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -142,7 +143,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="numberDecimal"
-                            android:textDouble="@={viewModel.price}"/>
+                            android:text="@={`` + viewModel.price}"/>
                         <!--
                         -->
                     </LinearLayout>

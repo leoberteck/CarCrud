@@ -1,12 +1,7 @@
 package com.example.leoberteck.cardcrud.mvp.impl;
 
 
-import android.animation.TypeEvaluator;
 import android.databinding.Bindable;
-import android.databinding.BindingConversion;
-import android.os.AsyncTask;
-import android.provider.ContactsContract;
-import android.view.WindowManager;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.example.leoberteck.cardcrud.entity.Brand;
@@ -21,7 +16,7 @@ import com.example.leoberteck.cardcrud.utils.ExtendedBaseObservable;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import static com.example.leoberteck.cardcrud.mvp.ModelFromMvp.*;
+import static com.example.leoberteck.cardcrud.mvp.ModelFormMvp.*;
 
 /**
  * Created by Trovata on 22/07/2017.
@@ -37,6 +32,7 @@ public class ModelFormPresenter extends ExtendedBaseObservable implements IModel
     private Integer selectedBrandPosition;
     private Integer selectedTypePosition;
 
+    private Integer idModel;
     private String name;
     private double price;
     private double weight;
@@ -54,6 +50,7 @@ public class ModelFormPresenter extends ExtendedBaseObservable implements IModel
 
     @Override
     public void setModel(Integer idModel) {
+        this.idModel = idModel;
         if(idModel != null && idModel > 0){
             Model model = modelRepository.load(idModel);
             if(model != null){
@@ -80,14 +77,16 @@ public class ModelFormPresenter extends ExtendedBaseObservable implements IModel
 
     private void refreshBrandList(Integer desiredId){
         setBrandList(brandRepository.loadAll());
+        int index = 0;
         if(desiredId != null && desiredId > 0){
             for (Brand brand : brandList) {
                 if(brand.getId().equals(desiredId)){
-                    setSelectedBrandPosition(brandList.indexOf(brand));
+                    index = brandList.indexOf(brand);
                     break;
                 }
             }
         }
+        setSelectedBrandPosition(index);
     }
 
     private void refreshTypeList(){
@@ -96,14 +95,16 @@ public class ModelFormPresenter extends ExtendedBaseObservable implements IModel
 
     private void refreshTypeList(Integer desiredId){
         setTypeList(typeRepository.loadAll());
+        int index = 0;
         if(desiredId != null && desiredId > 0){
             for (Type type : typeList) {
                 if(type.getId().equals(desiredId)){
-                    setSelectedTypePosition(typeList.indexOf(type));
+                    index = typeList.indexOf(type);
                     break;
                 }
             }
         }
+        setSelectedTypePosition(index);
     }
 
     @Override
@@ -114,19 +115,22 @@ public class ModelFormPresenter extends ExtendedBaseObservable implements IModel
     @Override
     public void saveNewBrand(String name) {
         Brand newBrand = new Brand(null, name);
-        brandRepository.save(newBrand);
-        refreshBrandList(newBrand.getId());
+        int newId = (int)brandRepository.insert(newBrand);
+        refreshBrandList(newId);
     }
 
     @Override
     public void saveNewType(String name) {
         Type newType = new Type(null, name);
-        typeRepository.save(newType);
-        refreshTypeList(newType.getId());
+        int newId = (int)typeRepository.insert(newType);
+        refreshTypeList(newId);
     }
 
     public void saveNewModel(){
-
+        Model newModel = new Model(idModel, name, weight, price, idBrand, idType);
+        modelRepository.save(newModel);
+        if(modelFormActivityWeakReference.get() != null)
+            modelFormActivityWeakReference.get().goBack();
     }
 
     public void requestNewBrand(){
@@ -166,6 +170,9 @@ public class ModelFormPresenter extends ExtendedBaseObservable implements IModel
 
     public void setSelectedBrandPosition(Integer selectedBrandPosition) {
         this.selectedBrandPosition = selectedBrandPosition;
+        if(selectedBrandPosition != null){
+            idBrand = brandList.get(selectedBrandPosition).getId();
+        }
         notifyPropertyChanged(BR.selectedBrandPosition);
     }
 
@@ -176,6 +183,9 @@ public class ModelFormPresenter extends ExtendedBaseObservable implements IModel
 
     public void setSelectedTypePosition(Integer selectedTypePosition) {
         this.selectedTypePosition = selectedTypePosition;
+        if(selectedTypePosition != null){
+            idType = typeList.get(selectedTypePosition).getId();
+        }
         notifyPropertyChanged(BR.selectedTypePosition);
     }
 
@@ -208,6 +218,4 @@ public class ModelFormPresenter extends ExtendedBaseObservable implements IModel
         this.weight = weight;
         notifyPropertyChanged(BR.weight);
     }
-
-
 }
