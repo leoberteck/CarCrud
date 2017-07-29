@@ -14,13 +14,13 @@ import org.greenrobot.greendao.DaoException;
 public class Model {
     @Id
     @Generated
-    private Integer id;
+    private Long id;
     private String name;
     private double weight;
     private double price;
 
-    private Integer idBrand;
-    private Integer idType;
+    private Long idBrand;
+    private Long idType;
 
     @ToOne(joinProperty = "idBrand")
     private Brand brand;
@@ -32,9 +32,9 @@ public class Model {
     /** Used for active entity operations. */
     @Generated(hash = 1902358955)
     private transient ModelDao myDao;
-    @Generated(hash = 778075598)
-    public Model(Integer id, String name, double weight, double price,
-            Integer idBrand, Integer idType) {
+    @Generated(hash = 1201924899)
+    public Model(Long id, String name, double weight, double price, Long idBrand,
+            Long idType) {
         this.id = id;
         this.name = name;
         this.weight = weight;
@@ -45,10 +45,10 @@ public class Model {
     @Generated(hash = 2118404446)
     public Model() {
     }
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getName() {
@@ -69,24 +69,24 @@ public class Model {
     public void setPrice(double price) {
         this.price = price;
     }
-    public Integer getIdBrand() {
+    public Long getIdBrand() {
         return this.idBrand;
     }
-    public void setIdBrand(Integer idBrand) {
+    public void setIdBrand(Long idBrand) {
         this.idBrand = idBrand;
     }
-    public Integer getIdType() {
+    public Long getIdType() {
         return this.idType;
     }
-    public void setIdType(Integer idType) {
+    public void setIdType(Long idType) {
         this.idType = idType;
     }
-    @Generated(hash = 671615819)
-    private transient Integer brand__resolvedKey;
+    @Generated(hash = 676862821)
+    private transient Long brand__resolvedKey;
     /** To-one relationship, resolved on first access. */
-    @Generated(hash = 1878864586)
+    @Generated(hash = 919760472)
     public Brand getBrand() {
-        Integer __key = this.idBrand;
+        Long __key = this.idBrand;
         if (brand__resolvedKey == null || !brand__resolvedKey.equals(__key)) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
@@ -110,12 +110,12 @@ public class Model {
             brand__resolvedKey = idBrand;
         }
     }
-    @Generated(hash = 1960251954)
-    private transient Integer type__resolvedKey;
+    @Generated(hash = 506996655)
+    private transient Long type__resolvedKey;
     /** To-one relationship, resolved on first access. */
-    @Generated(hash = 1185465862)
+    @Generated(hash = 333606930)
     public Type getType() {
-        Integer __key = this.idType;
+        Long __key = this.idType;
         if (type__resolvedKey == null || !type__resolvedKey.equals(__key)) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {

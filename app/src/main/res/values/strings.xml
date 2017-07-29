@@ -100,4 +100,12 @@
     <string name="dialog_create_new_title">Create new</string>
     <string name="dialog_create_new_hint">name</string>
     <string name="dialog_create_confirm">save</string>
+    <string name="model_view_holde_price">Price :</string>
+    <string name="model_repository_validade_model_null">The car model cannot be null</string>
+    <string name="model_repository_validade_model_name_null">The car model name cannot be null</string>
+    <string name="model_repository_validade_model_brand_null">The car model brand cannot be null</string>
+    <string name="model_repository_validade_model_type_null">The car model type cannot be null</string>
+    <string name="model_repository_validade_model_price_zero">The car model price must be greater than zero</string>
+    <string name="model_repository_validade_model_weight_zero">The car model weight must be greate than zero</string>
+    <string name="altert_dialog_title">Warning</string>
 </resources>

@@ -10,7 +10,7 @@ import org.greenrobot.greendao.AbstractDao;
  * Created by Trovata on 22/07/2017.
  */
 
-public class TypeRepository extends AbstractRepository<Type, Integer> implements ITypeRepository {
+public class TypeRepository extends AbstractRepository<Type, Long> implements ITypeRepository {
     public TypeRepository() {
         super(App.getDaoSession().getTypeDao());
     }

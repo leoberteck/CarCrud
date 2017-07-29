@@ -11,31 +11,37 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class Type {
     @Id
-    private Integer id;
+    private Long id;
     private String name;
-    @Generated(hash = 1736033125)
-    public Type(Integer id, String name) {
+
+    @Generated(hash = 1884504993)
+    public Type(Long id, String name) {
         this.id = id;
-        this.name = name;
-    }
-    @Generated(hash = 1782799822)
-    public Type() {
-    }
-    public Integer getId() {
-        return this.id;
-    }
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public void setName(String name) {
         this.name = name;
     }
 
+    @Generated(hash = 1782799822)
+    public Type() {
+    }
+    
     @Override
     public String toString() {
         return name;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

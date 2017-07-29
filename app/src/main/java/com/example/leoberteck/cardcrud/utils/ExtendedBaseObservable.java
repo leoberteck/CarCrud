@@ -8,6 +8,7 @@ import android.databinding.InverseBindingMethod;
 import android.databinding.InverseBindingMethods;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatSpinner;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -23,7 +24,6 @@ import java.text.DecimalFormat;
 
 @InverseBindingMethods({
     @InverseBindingMethod(type = AppCompatSpinner.class, attribute = "android:selectedItemPosition"),
-    @InverseBindingMethod(type = AppCompatEditText.class, attribute = "android:textDouble")
 })
 public abstract class ExtendedBaseObservable extends BaseObservable {
 
@@ -44,6 +44,11 @@ public abstract class ExtendedBaseObservable extends BaseObservable {
                 }
             });
         }
+    }
+
+    @BindingAdapter("adapter")
+    public static void setAdapter(RecyclerView recyclerView, RecyclerView.Adapter adapter){
+        recyclerView.setAdapter(adapter);
     }
 
     @InverseBindingAdapter(attribute = "selectedItemPosition")

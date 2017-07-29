@@ -3,7 +3,9 @@ package com.example.leoberteck.cardcrud.utils;
 import android.util.Log;
 
 import com.example.leoberteck.cardcrud.annotations.Profile;
+import com.example.leoberteck.cardcrud.mvp.MainMvp;
 import com.example.leoberteck.cardcrud.mvp.ModelFormMvp;
+import com.example.leoberteck.cardcrud.mvp.impl.MainPresenter;
 import com.example.leoberteck.cardcrud.mvp.impl.ModelFormPresenter;
 import com.example.leoberteck.cardcrud.repository.impl.BrandRepository;
 import com.example.leoberteck.cardcrud.repository.impl.ModelRepository;
@@ -31,6 +33,7 @@ public final class DependencyCacheHelper {
         link(IBrandRepository.class, BrandRepository.class);
         link(ITypeRepository.class, TypeRepository.class);
         link(ModelFormMvp.IModelFormPresenter.class, ModelFormPresenter.class);
+        link(MainMvp.IMainPresenter.class, MainPresenter.class);
     }
 
     public static <T> void disposeInstance(Class<T> tClass){

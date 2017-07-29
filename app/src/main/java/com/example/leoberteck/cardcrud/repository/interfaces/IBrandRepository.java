@@ -8,5 +8,5 @@ import com.example.leoberteck.cardcrud.entity.Brand;
  * Created by Trovata on 22/07/2017.
  */
 
-public interface IBrandRepository extends IAbstractRepository<Brand, Integer> {
+public interface IBrandRepository extends IAbstractRepository<Brand, Long> {
 }

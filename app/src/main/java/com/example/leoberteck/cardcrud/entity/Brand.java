@@ -12,31 +12,37 @@ import org.greenrobot.greendao.annotation.Id;
 public class Brand {
     @Id
     @Generated
-    private Integer id;
+    private Long id;
     private String name;
-    @Generated(hash = 766751527)
-    public Brand(Integer id, String name) {
+
+    @Generated(hash = 389708422)
+    public Brand(Long id, String name) {
         this.id = id;
         this.name = name;
     }
+
     @Generated(hash = 128156227)
     public Brand() {
-    }
-    public Integer getId() {
-        return this.id;
-    }
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override
     public String toString() {
         return name;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

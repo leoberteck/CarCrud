@@ -1,8 +1,11 @@
 package com.example.leoberteck.cardcrud.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -29,10 +32,10 @@ public class ModelFormActivity extends AppCompatActivity implements IModelFormAc
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Integer modelId = null;
+        Long modelId = null;
         Intent intent = getIntent();
         if(intent != null && intent.getExtras() != null && intent.getExtras().containsKey("modelId")){
-            modelId = intent.getExtras().getInt("modelId");
+            modelId = intent.getExtras().getLong("modelId");
         }
         presenter.setModel(modelId);
     }
@@ -77,5 +80,20 @@ public class ModelFormActivity extends AppCompatActivity implements IModelFormAc
     @Override
     public void goBack() {
         finish();
+    }
+
+    @Override
+    public void showError(@StringRes int message) {
+        new AlertDialog.Builder(this)
+        .setTitle(R.string.altert_dialog_title)
+        .setMessage(message)
+        .setCancelable(false)
+        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        })
+        .show();
     }
 }

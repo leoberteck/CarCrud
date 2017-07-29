@@ -10,7 +10,7 @@ import org.greenrobot.greendao.AbstractDao;
  * Created by Trovata on 22/07/2017.
  */
 
-public class BrandRepository extends AbstractRepository<Brand, Integer> implements IBrandRepository {
+public class BrandRepository extends AbstractRepository<Brand, Long> implements IBrandRepository {
     public BrandRepository() {
         super(App.getDaoSession().getBrandDao());
     }

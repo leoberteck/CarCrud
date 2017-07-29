@@ -2,11 +2,13 @@ package com.example.leoberteck.cardcrud.mvp.impl;
 
 
 import android.databinding.Bindable;
+import android.util.Log;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.example.leoberteck.cardcrud.entity.Brand;
 import com.example.leoberteck.cardcrud.entity.Model;
 import com.example.leoberteck.cardcrud.entity.Type;
+import com.example.leoberteck.cardcrud.exceptions.EntityValidationException;
 import com.example.leoberteck.cardcrud.repository.interfaces.IBrandRepository;
 import com.example.leoberteck.cardcrud.repository.interfaces.IModelRepository;
 import com.example.leoberteck.cardcrud.repository.interfaces.ITypeRepository;
@@ -24,6 +26,8 @@ import static com.example.leoberteck.cardcrud.mvp.ModelFormMvp.*;
 
 public class ModelFormPresenter extends ExtendedBaseObservable implements IModelFormPresenter {
 
+    private final String TAG = getClass().getSimpleName();
+
     private WeakReference<IModelFormActivity> modelFormActivityWeakReference;
 
     private List<Brand> brandList;
@@ -32,12 +36,12 @@ public class ModelFormPresenter extends ExtendedBaseObservable implements IModel
     private Integer selectedBrandPosition;
     private Integer selectedTypePosition;
 
-    private Integer idModel;
+    private Long idModel;
     private String name;
     private double price;
     private double weight;
-    private Integer idBrand;
-    private Integer idType;
+    private Long idBrand;
+    private Long idType;
 
     private IBrandRepository brandRepository = DependencyCacheHelper.getInstance(IBrandRepository.class);
     private ITypeRepository typeRepository = DependencyCacheHelper.getInstance(ITypeRepository.class);
@@ -49,7 +53,7 @@ public class ModelFormPresenter extends ExtendedBaseObservable implements IModel
     }
 
     @Override
-    public void setModel(Integer idModel) {
+    public void setModel(Long idModel) {
         this.idModel = idModel;
         if(idModel != null && idModel > 0){
             Model model = modelRepository.load(idModel);
@@ -61,6 +65,7 @@ public class ModelFormPresenter extends ExtendedBaseObservable implements IModel
                 idType = model.getIdType();
             }
         } else {
+            idModel = null;
             setName(null);
             setWeight(0);
             setPrice(0);
@@ -75,9 +80,9 @@ public class ModelFormPresenter extends ExtendedBaseObservable implements IModel
         refreshBrandList(idBrand);
     }
 
-    private void refreshBrandList(Integer desiredId){
+    private void refreshBrandList(Long desiredId){
         setBrandList(brandRepository.loadAll());
-        int index = 0;
+        Integer index = brandList != null && brandList.size() > 0 ? 0 : null;
         if(desiredId != null && desiredId > 0){
             for (Brand brand : brandList) {
                 if(brand.getId().equals(desiredId)){
@@ -93,9 +98,9 @@ public class ModelFormPresenter extends ExtendedBaseObservable implements IModel
         refreshTypeList(idType);
     }
 
-    private void refreshTypeList(Integer desiredId){
+    private void refreshTypeList(Long desiredId){
         setTypeList(typeRepository.loadAll());
-        int index = 0;
+        Integer index = typeList != null && typeList.size() > 0 ? 0 : null;
         if(desiredId != null && desiredId > 0){
             for (Type type : typeList) {
                 if(type.getId().equals(desiredId)){
@@ -115,22 +120,29 @@ public class ModelFormPresenter extends ExtendedBaseObservable implements IModel
     @Override
     public void saveNewBrand(String name) {
         Brand newBrand = new Brand(null, name);
-        int newId = (int)brandRepository.insert(newBrand);
+        Long newId = brandRepository.insert(newBrand);
         refreshBrandList(newId);
     }
 
     @Override
     public void saveNewType(String name) {
         Type newType = new Type(null, name);
-        int newId = (int)typeRepository.insert(newType);
+        Long newId = typeRepository.insert(newType);
         refreshTypeList(newId);
     }
 
     public void saveNewModel(){
-        Model newModel = new Model(idModel, name, weight, price, idBrand, idType);
-        modelRepository.save(newModel);
-        if(modelFormActivityWeakReference.get() != null)
-            modelFormActivityWeakReference.get().goBack();
+        try {
+            Model newModel = new Model(idModel, name, weight, price, idBrand, idType);
+            modelRepository.validate(newModel);
+            modelRepository.save(newModel);
+            if(modelFormActivityWeakReference.get() != null)
+                modelFormActivityWeakReference.get().goBack();
+        } catch (EntityValidationException e) {
+            if(modelFormActivityWeakReference.get() != null)
+                modelFormActivityWeakReference.get().showError(e.getMessageRes());
+            Log.e(TAG, "Could not save new model", e);
+        }
     }
 
     public void requestNewBrand(){
